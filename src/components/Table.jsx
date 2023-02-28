@@ -1,7 +1,7 @@
 import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
 
-function Table() {
+function Table() { // table component
   const { planets } = useContext(PlanetsContext);
   return (
     <table>
