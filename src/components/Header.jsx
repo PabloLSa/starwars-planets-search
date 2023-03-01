@@ -1,10 +1,13 @@
 import React from 'react';
-import Namefilter from './filters/Namefilter';
+import styles from './styles/Header.module.css';
+import NameFilter from './filters/NameFilter';
+import NumberFilter from './filters/NumberFilter';
 
 function Header() {
   return (
-    <div>
-      <Namefilter />
+    <div className={ styles.body }>
+      <NameFilter />
+      <NumberFilter />
     </div>
   );
 }
