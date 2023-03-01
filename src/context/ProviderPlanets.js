@@ -6,7 +6,7 @@ const API_URL = 'https://swapi.dev/api/planets';
 
 function ProviderPlanets({ children }) {
   const [planets, setPlanets] = useState([]);
-
+  const [filterPlanets, setFilterPlanets] = useState([]);
   useEffect(() => {
     async function fetchPlanets() {
       try {
@@ -21,7 +21,7 @@ function ProviderPlanets({ children }) {
     fetchPlanets();
   }, []);
   const context = {
-    planets,
+    planets, filterPlanets, setFilterPlanets,
   };
   return (
     <PlanetsContext.Provider value={ context }>

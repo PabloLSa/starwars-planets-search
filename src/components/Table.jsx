@@ -1,10 +1,14 @@
 import React, { useContext } from 'react';
 import PlanetsContext from '../context/PlanetsContext';
+import styles from './styles/Table.module.css';
 
 function Table() { // table component
-  const { planets } = useContext(PlanetsContext);
+  const { planets, filterPlanets } = useContext(PlanetsContext);
+
   return (
-    <table>
+
+    <table className={ styles.body }>
+
       <thead>
         <tr>
           <th>Name</th>
@@ -23,7 +27,7 @@ function Table() { // table component
         </tr>
       </thead>
       <tbody>
-        {planets.map((planet) => (
+        {(filterPlanets.length > 0 ? filterPlanets : planets).map((planet) => (
           <tr key={ planet.name }>
             <td>{planet.name}</td>
             <td>{planet.rotation_period}</td>
