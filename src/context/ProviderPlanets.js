@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import PropTypes from 'prop-types';
 import PlanetsContext from './PlanetsContext';
 
@@ -7,6 +7,7 @@ const API_URL = 'https://swapi.dev/api/planets';
 function ProviderPlanets({ children }) {
   const [planets, setPlanets] = useState([]);
   const [filterPlanets, setFilterPlanets] = useState([]);
+  const [save, setSave] = useState([]);
   useEffect(() => {
     async function fetchPlanets() {
       try {
@@ -20,9 +21,9 @@ function ProviderPlanets({ children }) {
     }
     fetchPlanets();
   }, []);
-  const context = {
-    planets, filterPlanets, setFilterPlanets,
-  };
+  const context = useMemo(() => ({
+    planets, filterPlanets, setFilterPlanets, save, setSave,
+  }), [planets, filterPlanets, save, setFilterPlanets, setSave]);
   return (
     <PlanetsContext.Provider value={ context }>
       {children}

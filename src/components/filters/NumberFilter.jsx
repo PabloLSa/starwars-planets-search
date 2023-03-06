@@ -6,35 +6,68 @@ const opt = ['population', 'orbital_period',
   'diameter', 'rotation_period', 'surface_water'];
 
 function NumberFilter() {
-  const { planets, setFilterPlanets, filterPlanets } = useContext(PlanetsContext);
+  const { planets,
+    setFilterPlanets,
+    filterPlanets,
+    save,
+    setSave } = useContext(PlanetsContext);
   const [options, setOption] = useState(opt);
   const [column, setColumn] = useState('population');
   const [comparison, setComparison] = useState('maior que');
   // const [filterSave, setFilterSave] = useState([]);
   const [value, setValue] = useState('0');
 
-  const handleFilter = () => {
-    const filterComparision = filterPlanets.length > 0 ? filterPlanets : planets;
+  const handleFilter = (col, com, val, fc) => {
+    const filterComparision = fc;
     let filter = [];
-    if (comparison === 'maior que') {
+    if (com === 'maior que') {
       filter = filterComparision
-        .filter((planet) => Number(planet[column]) > Number(value));
+        .filter((planet) => Number(planet[col]) > Number(val));
     }
-    if (comparison === 'menor que') {
+    if (com === 'menor que') {
       filter = filterComparision
-        .filter((planet) => Number(planet[column]) < Number(value));
+        .filter((planet) => Number(planet[col]) < Number(val));
     }
-    if (comparison === 'igual a') {
+    if (com === 'igual a') {
       filter = filterComparision
-        .filter((planet) => Number(planet[column]) === Number(value));
+        .filter((planet) => Number(planet[col]) === Number(val));
     }
-    setFilterPlanets(filter);
+    return filter;
+  };
+
+  const handleRemoveNumericFilter = (columnName) => {
+    const newSave = save.filter((f) => f.column !== columnName);
+    setSave(newSave);
+    setOption([...options, columnName]);
+    let newArray = planets;
+    newSave.forEach((element) => {
+      newArray = handleFilter(
+        element.column,
+        element.comparison,
+        element.value,
+        newArray,
+      );
+    });
+    setFilterPlanets(newArray);
+  };
+
+  // const handleRemoveFilter = () => {
+  // setFilterPlanets(planets);
+  // setOption(opt);
+  // };
+
+  const handleRemoveAllFilters = () => {
+    setSave([]);
+    setFilterPlanets(planets);
   };
 
   const handleClick = () => {
     const noRepeatFilters = options.filter((option) => option !== column);
     setOption(noRepeatFilters);
-    handleFilter();
+    setSave([
+      ...save, { column, comparison, value },
+    ]);
+    setFilterPlanets(handleFilter(column, comparison, value, filterPlanets));
     setColumn('population');
     setComparison('maior que');
     setValue('0');
@@ -84,6 +117,35 @@ function NumberFilter() {
             Filtrar
 
           </button>
+        </label>
+        {save.map((filter) => (
+          <div data-testid="filter" key={ filter.column }>
+            <span>
+              {filter.column}
+              {' '}
+              {filter.comparison}
+              {' '}
+              {filter.value}
+            </span>
+            <button
+              type="button"
+              onClick={ () => handleRemoveNumericFilter(filter.column) }
+            >
+              X
+
+            </button>
+          </div>
+        ))}
+
+        <label htmlFor="removeFIlter">
+          <button
+            type="button"
+            data-testid="button-remove-filters"
+            onClick={ () => handleRemoveAllFilters() }
+          >
+            Remover filtros
+          </button>
+
         </label>
       </label>
     </div>
