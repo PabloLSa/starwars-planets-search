@@ -16,6 +16,9 @@ function NumberFilter() {
   const [comparison, setComparison] = useState('maior que');
   // const [filterSave, setFilterSave] = useState([]);
   const [value, setValue] = useState('0');
+  // const [sort, setSort] = useState({ column: 'population', ordenar: 'ASC' });
+  const [columnSort, setColumnSort] = useState('population');
+  const [columnOrder, setColumnOrder] = useState('ASC');
 
   const handleFilter = (col, com, val, fc) => {
     const filterComparision = fc;
@@ -50,11 +53,53 @@ function NumberFilter() {
     });
     setFilterPlanets(newArray);
   };
+  // const handleSort = () => {
+  //   const sortedPlanets = planets.sort((a, b) => {
+  //     let columnA = a[sort.column];
+  //     let columnB = b[sort.column];
+
+  //     if (columnA === 'unknown') {
+  //       columnA = Infinity;
+  //     } else {
+  //       columnA = Number(columnA);
+  //     }
+
+  //     if (columnB === 'unknown') {
+  //       columnB = Infinity;
+  //     } else {
+  //       columnB = Number(columnB);
+  //     }
+
+  //     if (sort.ordenar === 'ASC') {
+  //       return columnA - columnB;
+  //     }
+  //     return columnB - columnA;
+  //   });
+
+  //   setFilterPlanets(sortedPlanets);
+  //   // setSort({ ...sort });
+  // };
 
   // const handleRemoveFilter = () => {
   // setFilterPlanets(planets);
   // setOption(opt);
   // };
+
+  const handleSort = () => {
+    const planetFilter = filterPlanets.sort((a, b) => {
+      const lessOne = -1;
+      if (b[columnSort] === 'unknown') return lessOne;
+
+      if (columnOrder === 'ASC') {
+        return +a[columnSort] - +b[columnSort];
+      }
+
+      return +b[columnSort] - +a[columnSort];
+    });
+    const newArrays = [...planetFilter];
+    setFilterPlanets(newArrays);
+    // console.log(planetFilter);
+  };
 
   const handleRemoveAllFilters = () => {
     setSave([]);
@@ -148,6 +193,45 @@ function NumberFilter() {
 
         </label>
       </label>
+      <label
+        htmlFor="sortSelect"
+      >
+        <select
+          name="Ordem"
+          data-testid="column-sort"
+          id="sortSelect"
+          value={ columnSort }
+          onChange={ (e) => setColumnSort(e.target.value) }
+        >
+          {options.map((option) => <option key={ option }>{option}</option>)}
+        </select>
+      </label>
+      <label htmlFor="ASC">
+        <input
+          type="radio"
+          data-testid="column-sort-input-asc"
+          name="Order"
+          id="ASC"
+          value="ASC"
+          onChange={ (e) => setColumnOrder(e.target.value) }
+        />
+      </label>
+      <label htmlFor="DESC">
+        <input
+          type="radio"
+          data-testid="column-sort-input-desc"
+          name="Order"
+          id="DESC"
+          value="DESC"
+          onChange={ (e) => setColumnOrder(e.target.value) }
+        />
+      </label>
+      <button
+        data-testid="column-sort-button"
+        onClick={ handleSort }
+      >
+        ordenar
+      </button>
     </div>
   );
 }
