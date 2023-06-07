@@ -20,7 +20,7 @@ A aplicação foi desenvolvida utilizando as seguintes tecnologias:
 
 - React: Biblioteca poderosa para a criação de interfaces de usuário modernas e reativas. Sua abordagem baseada em componentes, reconciliação eficiente e uso de hooks facilitam o desenvolvimento de aplicações web robustas e de alto desempenho.
 
-- Context API:Uma API do React que permite o compartilhamento de estados entre componentes sem a     necessidade de passar props manualmente.
+- Context API: Uma API do React que permite o compartilhamento de estados entre componentes sem a     necessidade de passar props manualmente.
 
 - Hooks: Mecanismos introduzidos no React para utilizar estados e outros recursos em componentes funcionais.
 
